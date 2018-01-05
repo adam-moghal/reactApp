@@ -7,7 +7,6 @@ class Header extends Component {
         return (
             <thead>
                 <th>&nbsp;</th>
-                <th>id</th>
                 <th>name</th>
                 <th>age</th>
                 <th>position</th>

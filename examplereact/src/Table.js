@@ -9,7 +9,7 @@ class Table extends Component {
             <table className="playersTable">
                 <table>
                     <Header/>
-                    <Rows player={this.props.player} /> 
+                    <Rows player={this.props.player} delete = {this.props.delete} edit = {this.props.edit}/> 
                 </table>
             </table>
         );

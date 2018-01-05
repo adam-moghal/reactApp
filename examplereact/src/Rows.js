@@ -2,18 +2,18 @@ import React, { Component } from 'react';
 import './App.css';
 
 class Rows extends Component {
+
     render() {
         return (
             <tbody id="playerDetails">
                 {
                     this.props.player.map((players) => (
-                        <tr key={players.id.toString()}>
-                            <td> <button class="deletePlayer"> X </button> </td>
-                            <td> {players.id}</td>
-                            <td> {players.name}</td>
+                        <tr>
+                            <td> <button data-id={players.id} class="deletePlayer" onClick={this.props.delete}> X </button> </td>
+                            <td id= "name"> {players.name}</td>
                             <td> {players.age}</td>
                             <td> {players.position}</td>
-                            <td> <button class="editPlayer"> Edit </button> </td>
+                            <td> <button data-id={players.id} class="editPlayer" onClick={this.props.edit}> Edit </button> </td>
                         </tr>
                     ))
                 }

@@ -3,68 +3,104 @@ import logo from './logo.svg';
 import './App.css';
 import Table from "./Table.js";
 
-//const url = "http://localhost:3000/api/player/";
-
+const url = "http://localhost:3000/api/player/";
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      player: [{
-        id: 1,
-        name: "Petr Cech",
-        age: 35,
-        position: "Goalkeeper"
-      }]
+      player: []
     }
 
-    // this.onSuccess = (response) => {
-    //   return response.json();
-    // };
-    // this.onError = (error) => {
-    //   console.log(error);
-    // };
 
-    // this.load = () => {
-    //   fetch(url)
-    //     .then((resp) => resp.json().then((players) => {
-    //       this.setState({ player: players });
-    //     }));
-    // }
+    this.handleSubmitInParent = (dataFromForm) => {
+      let array = this.state.player;
+      array.push({
+        id: array.length,
+        name: dataFromForm.myData
+      })
+      this.setState({ array })
+    }
 
+    this.load = () => {
+      fetch(url)
+        .then((resp) => resp.json().then((players) => {
+          this.setState({ player: players });
+        }));
+    }
 
+    this.onSuccess = (response) => {
+      return response.json();
+    };
+    this.onError = (error) => {
+      console.log(error);
+    };
   }
 
   componentDidMount() {
-   //  this.load();
+    this.load();
   }
 
-  // createPlayer(){
-  //   let id = document.getElementById("inputPlayerId").value;
-  //   let name = document.getElementById("inputPlayerAge").value;
-  //   let age = document.getElementById("inputPlayerPosition").value;
-  //   let position = document.getElementById("inputPlayerName").value;
-    
-  //   let newPlayer = {
-  //     id : id,
-  //     name : name,
-  //     age : age,
-  //     position : position
-  //   }
+  createPlayer() {
+    let players = this.state.player;
 
-  //   const request = new Request(url, {
-  //         method: "POST",
-  //         headers: {
-  //           'Content-Type': 'application/json'
-  //         },
-  //         body: JSON.stringify(newPlayer)
-  //       });
-  //       return fetch(request).then(this.onSuccess, this.onError);
-  // }
-  
-  addPlayer(){
-    let array = this.state.player
-   alert(array.length) 
+    let name = document.getElementById("inputPlayerName").value;
+    let age = document.getElementById("inputPlayerAge").value;
+    let position = document.getElementById("inputPlayerPosition").value;
+
+    let newPlayer = {
+      id: players.length + 1,
+      name: name,
+      age: age,
+      position: position
+    }
+    players.push(newPlayer)
+    this.setState({ players })
+    this.clearInputs();
+
+    const request = new Request(url, {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newPlayer)
+    });
+    return fetch(request).then(this.onSuccess, this.onError);
+
+  }
+
+  deletePlayerFromTableAndDB(event) {
+    const element = event.target;
+    event.preventDefault();
+    let playerID = element.attributes["data-id"].value
+
+    const row = element.parentNode.parentNode;
+    row
+      .parentNode
+      .removeChild(row);
+
+    const request = new Request(url + playerID, {
+      method: "DELETE"
+    });
+    return fetch(request);
+  }
+  editPlayerFromTableAndDB(event) {
+    const element = event.target;
+    event.preventDefault();
+    let playerID = element.attributes["data-id"].value
+    alert(playerID)
+  }
+
+  clearInputs() {
+    document
+      .getElementById("inputPlayerName")
+      .value = "";
+    document
+      .getElementById("inputPlayerAge")
+      .value = "";
+    document
+      .getElementById("inputPlayerPosition")
+      .value = "";
   }
 
 
@@ -77,14 +113,13 @@ class App extends Component {
         </header>
         <div id="createPlayer">
           <form>
-            <input id="inputPlayerId" type="text" placeholder="player ID"></input>
             <input id="inputPlayerName" type="text" placeholder="player name"></input>
             <input id="inputPlayerAge" type="Number" placeholder="player age"></input>
             <input id="inputPlayerPosition" type="text" placeholder="player position"></input>
-             <input type="button" id ="addPlayer" onClick = {this.addPlayer.bind(this)} value="Create"></input> 
+            <input type="button" id="addPlayer" onClick={this.createPlayer.bind(this)} value="Create"></input>
           </form>
         </div>
-        <Table player={this.state.player} />
+        <Table player={this.state.player} delete={this.deletePlayerFromTableAndDB} edit={this.editPlayerFromTableAndDB} />
       </div>
     );
   }
