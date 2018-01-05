@@ -9,6 +9,7 @@ class Rows extends Component {
                     this.props.player.map((players) => (
                         <tr key={players.id.toString()}>
                             <td> <button class="deletePlayer"> X </button> </td>
+                            <td> {players.id}</td>
                             <td> {players.name}</td>
                             <td> {players.age}</td>
                             <td> {players.position}</td>
@@ -20,5 +21,4 @@ class Rows extends Component {
         );
     }
 }
-
 export default Rows;

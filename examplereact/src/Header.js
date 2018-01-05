@@ -7,6 +7,7 @@ class Header extends Component {
         return (
             <thead>
                 <th>&nbsp;</th>
+                <th>id</th>
                 <th>name</th>
                 <th>age</th>
                 <th>position</th>
@@ -16,4 +17,13 @@ class Header extends Component {
     }
 }
 
+// const Header = (props) => (
+//     <thead>
+//         <th>&nbsp;</th>
+//         <th>{props.header1}</th>
+//         <th>{props.header2}</th>
+//         <th>{props.header3}</th>
+//         <th>&nbsp;</th>
+//     </thead>
+// );
 export default Header;

@@ -7,10 +7,9 @@ class Table extends Component {
       render() {
         return (
             <table className="playersTable">
-                <br></br>
                 <table>
-                    <Header />
-                      <Rows player={this.props.player} /> 
+                    <Header/>
+                    <Rows player={this.props.player} /> 
                 </table>
             </table>
         );
